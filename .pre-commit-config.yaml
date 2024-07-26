@@ -1,0 +1,57 @@
+default_language_version:
+  python: python3.9
+exclude: ".git"
+fail_fast: false
+repos:
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        verbose: true
+  - repo: https://github.com/psf/black
+    rev: 22.8.0
+    hooks:
+      - id: black
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+        additional_dependencies:
+          - flake8-bugbear
+          - flake8-pytest-style
+          - flake8-pyproject
+        verbose: true
+  - repo: https://github.com/PyCQA/docformatter
+    rev: v1.7.5
+    hooks:
+      - id: docformatter
+        args:
+          [
+            --black,
+            --wrap-summaries=99,
+            --wrap-descriptions=99,
+            --in-place,
+            --pre-summary-newline,
+          ]
+        verbose: true
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: detect-private-key
+      - id: detect-aws-credentials
+        args: [--allow-missing-credentials]
+      - id: check-docstring-first
+      - id: debug-statements
+      - id: check-vcs-permalinks
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: check-json
+      - id: check-yaml
+      - id: check-toml
+      - id: check-case-conflict
+      - id: mixed-line-ending
+        args: [--fix=no]
+      - id: fix-encoding-pragma
+        args: [--remove]
+      - id: name-tests-test

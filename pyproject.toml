@@ -1,0 +1,161 @@
+[tool.pytest.ini_options]
+# addopts = "--cov --cov-report html"
+filterwarnings = [
+  'ignore::DeprecationWarning'
+]
+
+[tool.coverage.run]
+omit = ["tests/*", "alembic/*", "**/__init__.py", "**/*seed*"]
+
+
+[tool.flakeheaven]
+baseline = "baseline.txt" # Baseline file to compare against
+format = "grouped" # Make output colored and grouped by file
+show_source = false # Show the source code in output
+exclude = [
+    "venv",
+    ".git",
+    ".venv",
+    "__pycache__",
+    ".github",
+    ".pylintrc",
+    ".idea/*",
+    "**/*.mako",
+    ".vscode/*",
+    ".hypothesis",
+    "..bfg-report",
+    ".pytest_cache",
+    ".coverage",
+    # Project specific exclusions
+    "modules/utilities/database_management/*",
+    "modules/utilities/seed*",
+    "modules/utilities/test_seed.py",
+]
+inline-quotes = "double"
+max-line-length = 119
+max_complexity = 10
+test-func-name-validator-regex = "^test_.*"
+noqa-require-code = true
+
+# List of plugins and rules for them
+# Most plugins gathered from here - https://github.com/DmytroLitvinov/awesome-flake8-extensions
+[tool.flakeheaven.plugins]
+darglint = ["+*"]
+flake8 = ["-E203"] # Required for black
+flake8-absolute-import = ["+*"]
+flake8-annotations = [
+    "+ANN001",
+    "+ANN2??",
+] # Only require annotations for arguments and return
+flake8-bandit = ["-*", "+S1??"] # Enable only codes from S100 to S199
+flake8-bugbear = ["+*", "-B009"]
+flake8-class-attributes-order = ["+*"]
+flake8-comments = ["+*"]
+flake8-comprehensions = ["+*"]
+flake8-debugger = ["+*"]
+flake8-eradicate = ["+*"]
+flake8-functions-names = ["+*"]
+flake8-length = ["+*"]
+flake8-no-pep420 = ["+*"]
+flake8-noqa = ["+*"]
+flake8-pep585 = ["+*"]
+flake8-pep604 = ["+*"]
+flake8-pie = ["+*", "-PIE783"]
+flake8-print = ["+*"]
+flake8-pytest = ["+*"]
+flake8-rst-docstrings = ["+*"]
+flake8-simplify = [
+    "+*",
+    "-SIM106",
+] # Disabled since it has a high false-positive rate
+flake8-test-name = ["+*"]
+flake8-todos = ["+*"]
+flake8-use-fstring = ["+*"]
+flake8-variables-names = ["+*"]
+mccabe = ["+*"]
+pep8-naming = ["+*"]
+pycodestyle = [
+    "+*",
+    "-W503", # Line break before binary operator considered correct
+    "-E203", # Required for black
+    "-E501", # Supplanted by flake8-length
+    "-W505", # Supplanted by flake8-length
+]
+pyflakes = ["+*", "-F401"] # Include everything in pyflakes except F401 - module import not used
+pylint = ["+*"]
+
+# Exempt some files from some codes / linters
+[tool.flakeheaven.exceptions."**/conftest.py"]
+flake8-bandit = ["+*", "-S101", "-S105", "-S106"]
+flake8-annotations = ["-*", "-ANN001"]
+
+[tool.flakeheaven.exceptions."tests/**"]
+# Not worried about SQL injection in tests; ignore requests/timeouts false positives
+flake8-bandit = ["+*", "-S101", "-S105", "-S106", "-S113", "-S311", "-S608"]
+flake8-annotations = ["-*"]
+pylint = ["-W0143"] # SQLAlchemy allows comparison of callables
+flake8-print = ["-T201"] # Allow print in tests
+flake8-pie = ["-PIE806"] # We want asserts in tests
+flake8-no-pep420 = ["-INP001"] # We don't want an init in test folders
+
+[tool.flakeheaven.exceptions."*/*versions*/*"] # Ignore migration files for these rules
+flake8-bandit = ["+*", "-S101", "-S105", "-S106", "-S608"] # Not worried about SQL injection in migrations
+flake8-annotations = ["-*"]
+flake8-use-fstring = ["-*"]
+flake8-no-pep420 = ["-INP001"] # No need for init in migrations directory
+flake8-length = ["-LN002"] # Allow long lines in migrations
+
+[tool.flakeheaven.exceptions."**/routers/*"]
+flake8-bugbear = ["-B008"] # flake8-bugbear complains about how FastAPI handles router parameters
+flake8-use-fstring = ["-FS003"] # FastAPI uses f-strings in a way that flake8-use-fstring doesn't like for router parameters
+pylint = ["-E1205"] # Pylint doesn't like how we log in routers - logging-too-many-args
+
+[tool.flakeheaven.exceptions."**/utilities/auth.py"]
+flake8-bugbear = ["-B008"] # flake8-bugbear complains about how FastAPI handles Depends
+pycodestyle = ["-E711", "-E712"] # pycodestyle complains about how we implement SQLAlchemy boolean comparisons
+
+[tool.flakeheaven.exceptions."**/models/*"]
+flake8-variables-names = ["-VNE003"] # SQLAlchemy models almost always have some shadowed names
+
+# OK to use relative imports in this file
+[tool.flakeheaven.exceptions."**/models/__init__.py"]
+pyflakes = ["-F403"]
+flake8-absolute-import = ["-ABS101"]
+
+[tool.flakeheaven.exceptions."**/schemas/*"]
+flake8-variables-names = ["-VNE003"] # Pydantic schemas almost always have some shadowed names
+pep8-naming = ["-N805"] # Pydantic schemas have methods that have cls as the first argument
+flake8-class-attributes-order = ["-CCE001"] # Pydantic schemas have special ordering of Config class
+pylint = ["-C0413"] # Need to have import at the bottom for referential import
+
+[tool.flakeheaven.exceptions."**/actions/user_actions.py"]
+pycodestyle = ["-E711", "-E712"] # pycodestyle complains about how we implement SQLAlchemy boolean comparisons
+
+[tool.flakeheaven.exceptions."main.py"]
+flake8-no-pep420 = ["-INP001"] # We don't want an __init__ in the root directory
+
+[tool.flakeheaven.exceptions."write_taskdef.py"]
+flake8-no-pep420 = ["-INP001"] # We don't want an __init__ in the root directory
+
+[tool.flakeheaven.exceptions."__version__.py"]
+flake8-no-pep420 = ["-INP001"] # We don't want an __init__ in the root directory
+
+[tool.flakeheaven.exceptions."examples/*.py"]
+flake8-no-pep420 = ["-INP001"] # We don't want an __init__ in the examples directory
+
+[tool.flakeheaven.exceptions."alembic/env.py"]
+flake8-no-pep420 = ["-INP001"] # We don't want an __init__ in the alembic folder
+
+[tool.flakeheaven.exceptions."modules/docs/*/*"]
+flake8-no-pep420 = ["-INP001"] # We don't want an __init__ in the docs directories
+flake8-print = ["-T201"] # Allow print in docs directories
+flake8-eradicate = ["-E800"] # Allow commented out code in docs directories
+pylint = ["-E0001"] # Allow syntax errors in docs directories
+
+[tool.isort]
+profile = "black"
+skip_glob = ["**/alembic/*"]
+
+[tool.black]
+line-length = 119
+exclude = [".idea", "docs/", "**/pyproject.toml"]
