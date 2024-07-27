@@ -55,7 +55,7 @@ def db_connection_string(environment=None) -> str:
     PASSWORD: str = os.environ["PASSWORD"]
 
     # TODO implement configuration to get different strings depending on the environment
-
+    print(f"postgresql://{USERNAME}:{PASSWORD}@{POSTGRESQL_HOST}" f":{POSTGRESQL_PORT}/{DB_NAME}")
     return f"postgresql://{USERNAME}:{PASSWORD}@{POSTGRESQL_HOST}" f":{POSTGRESQL_PORT}/{DB_NAME}"
 
 

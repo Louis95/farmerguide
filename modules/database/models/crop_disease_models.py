@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from modules.database.models.utility_models import TimeStampMixin
-from modules.utilities.database import Base
+from modules.utilities import Base
 
 
 class CropDisease(Base, TimeStampMixin):

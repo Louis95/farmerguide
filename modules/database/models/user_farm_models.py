@@ -18,7 +18,7 @@ class UserRole(enum.Enum):
 # Pivot table for User-Farm many-to-many relationship
 user_farm = Table(
     "user_farm",
-    Base,
+    Base.metadata,
     Column("user_id", Integer, ForeignKey("users.id"), primary_key=True),
     Column("farm_id", Integer, ForeignKey("farms.id"), primary_key=True),
     Column("role", Enum(UserRole), nullable=False),
