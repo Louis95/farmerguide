@@ -6,15 +6,6 @@ from sqlalchemy.dialects.postgresql import TIMESTAMP
 from sqlalchemy.orm import declarative_mixin
 
 
-class PaymentStatusEnum(enum.Enum):
-    pending = "pending"
-    paid = "paid"
-
-
-# class utcnow(expression.FunctionElement):
-#     type = DateTime()
-
-
 @declarative_mixin
 class TimeStampMixin:
     def __init__(self, *args, **kwargs):

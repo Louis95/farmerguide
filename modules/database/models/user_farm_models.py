@@ -29,3 +29,14 @@ class User(Base, TimeStampMixin):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     farms = relationship("Farm", secondary=user_farm, back_populates="users")
+
+
+class Farm(Base, TimeStampMixin):
+    __tablename__ = "farms"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    location = Column(String)
+    size = Column(Float)  # in hectares
+    users = relationship("User", secondary=user_farm, back_populates="farms")
+    crop_diseases = relationship("CropDisease", back_populates="farm")
+    soil_health_records = relationship("SoilHealth", back_populates="farm")
