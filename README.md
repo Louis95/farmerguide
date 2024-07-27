@@ -20,7 +20,7 @@ erDiagram
     }
     SOIL_HEALTH {
         int id PK
-        int farm_id FK
+        int farm_id
         float ph_level
         float nitrogen_level
         float phosphorus_level
@@ -31,7 +31,7 @@ erDiagram
     }
     NOTIFICATION {
         int id PK
-        int user_id FK
+        int user_id
         text message
         string notification_type
         boolean is_read
@@ -39,14 +39,14 @@ erDiagram
     }
     FARMING_ADVICE {
         int id PK
-        int farm_id FK
+        int farm_id
         string advice_type
         text content
         datetime created_at
     }
     CROP_DISEASE {
         int id PK
-        int farm_id FK
+        int farm_id
         string crop_type
         string disease_name
         float confidence
@@ -55,8 +55,8 @@ erDiagram
         datetime detected_at
     }
     USER_FARM {
-        int user_id FK PK
-        int farm_id FK PK
+        int user_id PK
+        int farm_id PK
         string role
         datetime created_at
         datetime updated_at
