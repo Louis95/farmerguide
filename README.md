@@ -76,6 +76,7 @@ erDiagram
     USER_FARM }o--|| USER : belongs to
     USER_FARM }o--|| FARM : belongs to
 
+```
 
 ### Explanation
 - **Entities**:
