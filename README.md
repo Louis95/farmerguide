@@ -67,18 +67,7 @@ erDiagram
     USER ||--o{ NOTIFICATION : receives
     FARM ||--o{ SOIL_HEALTH : has
     FARM ||--o{ FARMING_ADVICE : receives
-    
     FARM ||--o{ CROP_DISEASE : has
-    
-    FARM ||--o{ USER_FARM : has many
-    
-    SOIL_HEALTH }o--|| FARM : belongs to
-    
-    NOTIFICATION }o--|| USER : belongs to
-    FARMING_ADVICE }o--|| FARM : belongs to
-    CROP_DISEASE }o--|| FARM : belongs to
-    USER_FARM }o--|| USER : belongs to
-    USER_FARM }o--|| FARM : belongs to
 
 ```
 
