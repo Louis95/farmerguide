@@ -1,9 +1,11 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float, Text, Enum, Table
+import enum
+
+from sqlalchemy import Column, DateTime, Enum, Float, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-import enum
-from modules.utilities.database import Base
+
 from modules.database.models.utility_models import TimeStampMixin
+from modules.utilities.database import Base
 
 
 class UserRole(enum.Enum):
@@ -14,12 +16,15 @@ class UserRole(enum.Enum):
 
 
 # Pivot table for User-Farm many-to-many relationship
-user_farm = Table('user_farm', Base,
-                  Column('user_id', Integer, ForeignKey('users.id'), primary_key=True),
-                  Column('farm_id', Integer, ForeignKey('farms.id'), primary_key=True),
-                  Column('role', Enum(UserRole), nullable=False),
-                  Column('created_at', DateTime(timezone=True), server_default=func.now()),
-                  Column('updated_at', DateTime(timezone=True), onupdate=func.now()))
+user_farm = Table(
+    "user_farm",
+    Base,
+    Column("user_id", Integer, ForeignKey("users.id"), primary_key=True),
+    Column("farm_id", Integer, ForeignKey("farms.id"), primary_key=True),
+    Column("role", Enum(UserRole), nullable=False),
+    Column("created_at", DateTime(timezone=True), server_default=func.now()),
+    Column("updated_at", DateTime(timezone=True), onupdate=func.now()),
+)
 
 
 class User(Base, TimeStampMixin):

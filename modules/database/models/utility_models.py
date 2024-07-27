@@ -1,5 +1,4 @@
 """Models defining various utility models, including Enums and utility Mixins."""
-import enum
 
 from sqlalchemy import Column, func
 from sqlalchemy.dialects.postgresql import TIMESTAMP

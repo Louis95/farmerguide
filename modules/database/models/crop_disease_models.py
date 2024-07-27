@@ -1,8 +1,9 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float, Text
+from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-from modules.utilities.database import Base
+
 from modules.database.models.utility_models import TimeStampMixin
+from modules.utilities.database import Base
 
 
 class CropDisease(Base, TimeStampMixin):

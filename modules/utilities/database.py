@@ -1,4 +1,4 @@
-"""Database module, used for various database related methods"""
+"""Database module, used for various database related methods."""
 import logging
 import os
 
@@ -13,7 +13,7 @@ load_dotenv()
 
 
 def get_db_session() -> sessionmaker:
-    """Retrieves a database session and yields it"""
+    """Retrieves a database session and yields it."""
     db_session = SessionLocal()
     try:
         yield db_session
@@ -22,7 +22,8 @@ def get_db_session() -> sessionmaker:
 
 
 def get_environment() -> str:
-    """Gets the environment from the environment variable ENV and returns local if it doesn't exist"""
+    """Gets the environment from the environment variable ENV and returns local if it doesn't
+    exist."""
     environment = os.getenv("STAGE", "local")
     print(f"environment from environment variable: {environment}")
 
@@ -35,7 +36,7 @@ def get_environment() -> str:
 
 
 def db_connection_string(environment=None) -> str:
-    """Creates db connection string to database"""
+    """Creates db connection string to database."""
     if environment is None:
         environment = get_environment()
 
