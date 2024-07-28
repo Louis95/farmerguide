@@ -5,7 +5,8 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-from sqlalchemy import eq
+
+# from sqlalchemy import eq
 from sqlalchemy.orm import Session
 
 from modules.database.models.user_farm_models import User
@@ -31,7 +32,7 @@ def get_password_hash(password):
 
 
 def authenticate_user(db: Session, username: str, password: str):
-    user = db.query(User).filter(eq(User.username, username)).first()
+    user = db.query(User).filter(User.username == username).first()
     if not user or not verify_password(password, user.hashed_password):
         return False
     return user
@@ -62,7 +63,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
         token_data = user_farm_schemas.TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    user = db.query(User).filter(eq(User.username, token_data.username)).first()
+    user = db.query(User).filter(User.username == token_data.username).first()
 
     if user is None:
         raise credentials_exception

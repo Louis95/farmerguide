@@ -42,7 +42,7 @@ class UserFarmInDB(UserFarmBase):
     updated_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserBase(BaseModel):
@@ -67,7 +67,7 @@ class UserInDB(UserBase):
     farms: List[UserFarmInDB] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class FarmBase(BaseModel):
@@ -93,4 +93,4 @@ class FarmInDB(FarmBase):
     users: List[UserFarmInDB] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True

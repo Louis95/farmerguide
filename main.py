@@ -6,7 +6,13 @@ import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI
 
-from modules.routers import users
+from modules.routers import (
+    crop_disease,
+    farming_advice,
+    soil_health,
+    users,
+    weather_forcast,
+)
 from modules.utilities.responses import base_responses
 
 # region Environment Variables and Global Variables
@@ -28,6 +34,10 @@ app = FastAPI(
 
 
 app.include_router(users.router)
+app.include_router(crop_disease.router)
+app.include_router(farming_advice.router)
+app.include_router(soil_health.router)
+app.include_router(weather_forcast.router)
 
 if __name__ == "__main__":
     load_dotenv()

@@ -22,4 +22,4 @@ class SoilHealthInDB(SoilHealthBase):
     analysis_date: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True

@@ -2,11 +2,11 @@ from datetime import timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy import eq
 from sqlalchemy.orm import Session
 
-from modules.database.models import user_farm_models
+from modules.database.models import Farm, user_farm_models
 from modules.database.schemas import user_farm_schemas
+from modules.database.schemas.user_farm_schemas import FarmCreate
 from modules.utilities import auth
 from modules.utilities.auth import get_db_session
 
@@ -16,7 +16,7 @@ router = APIRouter(tags=["Users"])
 @router.post("/register", response_model=user_farm_schemas.UserInDB)
 def register_user(user: user_farm_schemas.UserCreate, db: Session = Depends(get_db_session)):  # noqa: B008
     db_user = (
-        db.query(user_farm_models.User).filter(eq(user_farm_models.User.username, user.username)).first()
+        db.query(user_farm_models.User).filter(user_farm_models.User.username == user.username).first()
     )  # noqa: 950
     if db_user:
         raise HTTPException(status_code=400, detail="Username already registered")
@@ -59,7 +59,16 @@ async def logout(current_user: user_farm_models.User = Depends(auth.get_current_
     return {"detail": "Successfully logged out"}
 
 
-# Protected route example
-@router.get("/protected-route")
-async def protected_route(current_user: user_farm_models.User = Depends(auth.get_current_user)):  # noqa: B008
-    return {"message": f"Hello, {current_user.username}! This is a protected route."}
+# # Protected route example
+# @router.get("/protected-route")
+# async def protected_route(current_user: user_farm_models.User = Depends(auth.get_current_user)):  # noqa: B008
+#     return {"message": f"Hello, {current_user.username}! This is a protected route."}
+
+
+@router.post("/farms/", response_model=FarmCreate)
+def create_farm(farm: FarmCreate, db: Session = Depends(get_db_session)):  # noqa: B008
+    db_farm = Farm(name=farm.name, location=farm.location, size=farm.size)
+    db.add(db_farm)
+    db.commit()
+    db.refresh(db_farm)
+    return db_farm
