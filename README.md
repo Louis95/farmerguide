@@ -123,3 +123,55 @@ $ python3 -m pip install pre-commit
 
 $ pre-commit install
 ```
+## Start API manually
+
+
+0. **Install Required Packages**
+
+Install dependencies using the command given above
+
+2. **Create A Database**
+
+In order to perform migrations and run the app, you'll need to create a database.
+you should create a database called `farmerguide`
+To do this, you can use the [Postico](https://eggerapps.at/postico/) app or any other Postgresql client of your choice.
+
+2. **Copy `.env` & set correct values**
+
+The easiest way to set all environment variables needed for the API is to copy from sample:
+
+$ cp .env_sample .env
+
+The most important thing is to set DATABASE_URL. DATABASE_URL is mandatory and must be set to successfully run the API.
+
+3. **Copy `alembic.ini` & check sqlalchemy.url**
+
+In order for alembic to successfully run migrations, you'll need to update the `sqlalchemy.url` line in `alembic.ini`. An example of `alembic.ini` has been provided at `alembic.ini.example`. If you haven't already added your own version of this file, run the following command:
+
+$ cp alembic.ini.example alembic.ini
+
+
+Then, open `alembic.ini` in your editor of choice and ensure `sqlalchemy.url` line is EMPTY. It should look like this:
+
+
+sqlalchemy.url =
+
+
+4. **Run Database Migrations**
+
+To create the database tables required by this app, the alembic library is provided. It has already been initialized, and if you have updated the `alembic.ini` file as specified above, you should be able to perform the latest database migrations by simply running:
+
+
+$ alembic upgrade head
+
+
+Please keep in mind that these migrations may remove all data from the database and set everything up from zero, so this particular command should never be used in a production environment or in any scenario where you wish for data to persist.
+
+5. **Run Application**
+
+To run the application, run the following:
+
+```shell
+
+$ python main.py
+```
