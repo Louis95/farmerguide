@@ -81,8 +81,5 @@ def get_disease_data(prompt, imagePaths):
             tool_config={"function_calling_config": "ANY"},
         )
     fc = result.candidates[0].content.parts[0].function_call
-    # print(type(fc))
-    # print(json.dumps(type(fc).to_dict(fc), indent=4))
-    print(type(fc).to_dict(fc)["args"])
     images = [file_obj.uri for file_obj in uploadedImages]
     return type(fc).to_dict(fc)["args"]["crop_diagnosis"], images
