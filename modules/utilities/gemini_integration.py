@@ -6,9 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
 genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-
 
 crop_diagnosis = genai.protos.Schema(
     type=genai.protos.Type.OBJECT,
@@ -23,7 +21,14 @@ crop_diagnosis = genai.protos.Schema(
         "other_things_to_note": genai.protos.Schema(type=genai.protos.Type.STRING),
         "confidence_level": genai.protos.Schema(type=genai.protos.Type.NUMBER),
     },
-    required=["is_infected", "confidence_level", "crop_name", "crop_type", "disease_name", "treatment_recommendation"],
+    required=[
+        "is_infected",
+        "confidence_level",
+        "crop_name",
+        "crop_type",
+        "disease_name",
+        "treatment_recommendation",
+    ],
 )
 
 treatment_recommendation = genai.protos.Schema(

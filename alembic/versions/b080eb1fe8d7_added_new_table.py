@@ -33,9 +33,9 @@ def upgrade():
         sa.Column("confidence_level", sa.Float(), nullable=True),
         sa.Column("images", sa.ARRAY(sa.String()), nullable=True),
         sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=True),
-        sa.Column("updated_at", postgresql.TIMESTAMP(precision=6),
-                  \
-                   server_default=sa.text("now()"), nullable=True),
+        sa.Column(
+            "updated_at", postgresql.TIMESTAMP(precision=6), server_default=sa.text("now()"), nullable=True
+        ),  # noqa: B950
         sa.ForeignKeyConstraint(
             ["farm_id"],
             ["farms.id"],

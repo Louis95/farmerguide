@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, File, UploadFile
+from fastapi import APIRouter, Depends, UploadFile
 from sqlalchemy.orm import Session
 
 from modules.database.models import CropDisease
@@ -27,7 +27,7 @@ def create_crop_disease(crop_disease: CropDiseaseCreate, db: Session = Depends(g
 
 @router.post("/crop-diseases/detect", response_model=CropDiagnosisCreate)
 async def detect_crop_disease(
-    user_prompt: str, farm_id: int, files: List[UploadFile], db: Session = Depends(get_db_session)
+    user_prompt: str, farm_id: int, files: List[UploadFile], db: Session = Depends(get_db_session)  # noqa: B008
 ):
     # async def detect_crop_disease(user_prompt: str, files: List[UploadFile] = File(...)):
     filePaths = []
