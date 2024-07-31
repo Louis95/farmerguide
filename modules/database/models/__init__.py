@@ -1,4 +1,5 @@
 # flake8: noqa
+from .crop_diagnosis_models import *
 from .crop_disease_models import *
 from .farm_advice_models import *
 from .notification_models import *

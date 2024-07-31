@@ -45,3 +45,4 @@ class Farm(Base, TimeStampMixin):
     users = relationship("User", secondary=user_farm, back_populates="farms")
     crop_diseases = relationship("CropDisease", back_populates="farm")
     soil_health_records = relationship("SoilHealth", back_populates="farm")
+    crop_diagnosis = relationship("CropDiagnosis", back_populates="farm")
