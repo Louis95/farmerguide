@@ -22,3 +22,7 @@ class CropDiseaseInDB(CropDiseaseBase):
 
     class Config:
         from_attributes = True
+
+
+class CropDiseaseOpt(BaseModel):
+    text: str
