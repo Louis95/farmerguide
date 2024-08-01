@@ -43,3 +43,10 @@ async def detect_crop_disease(
     db.commit()
     db.refresh(db_crop_diagnosis)
     return db_crop_diagnosis
+@router.get("/crop-diseases/{crop_diagnosis_id}", response_model=CropDiagnosisCreate)
+def get_crop_disease(crop_diagnosis_id: int, db: Session = Depends(get_db_session)):
+    return db.query(CropDiagnosis).filter(CropDiagnosis.id == crop_diagnosis_id).first()
+
+@router.get("/crop-diseases/history", response_model=List[CropDiagnosisCreate])
+def get_crop_disease_history(farm_id: int, db: Session = Depends(get_db_session)):
+    return db.query(CropDiagnosis).filter(CropDiagnosis.farm_id == farm_id).all()
