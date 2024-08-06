@@ -19,7 +19,7 @@ from modules.utilities import Base
 class CropDiagnosis(Base, TimeStampMixin):
     __tablename__ = "crop_diagnosis"
     id = Column(Integer, primary_key=True, index=True)
-    farm_id = Column(Integer, ForeignKey("farms.id"))
+    crop_id = Column(Integer, ForeignKey("crops.id", ondelete="CASCADE"))
     is_infected = Column(BOOLEAN)
     crop_name = Column(String)
     crop_type = Column(String)
@@ -31,4 +31,4 @@ class CropDiagnosis(Base, TimeStampMixin):
     confidence_level = Column(Float)
     images = Column(ARRAY(String))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    farm = relationship("Farm", back_populates="crop_diagnosis")
+    crop = relationship("Crop", back_populates="diagnoses")
