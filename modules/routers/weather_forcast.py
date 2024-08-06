@@ -8,7 +8,7 @@ from modules.utilities.auth import get_db_session
 router = APIRouter(tags=["WeatherForcast"])
 
 
-@router.post("/weather_forcast/", response_model=WeatherForecastCreate)
+@router.post("/farm-weather-forecast", response_model=WeatherForecastCreate)
 def create_weather_forcast(
     weather_forcast: WeatherForecastCreate, db: Session = Depends(get_db_session)  # noqa: B008
 ):  # noqa: B008
