@@ -16,7 +16,7 @@ router = APIRouter(tags=["WeatherForcast"])
 def get_weather_forcast(
     db: Session = Depends(get_db_session),
     farm_id: int = Query(..., description="The ID of the farm to return weather forecast for"),
-    days: int = Query(..., default=7, description="The number of days return weather forecast"),
+    days: int = Query(..., description="The number of days return weather forecast"),
     current_user: User = Depends(auth.get_current_user),
 ):
     user_farm = (

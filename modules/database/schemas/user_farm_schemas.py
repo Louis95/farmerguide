@@ -76,21 +76,25 @@ class FarmBase(BaseModel):
     size: float
 
 
-class FarmCreate(FarmBase):
-    pass
+class FarmCreateRequest(BaseModel):
+    name: str
+    latitude: Optional[float]
+    longitude: Optional[float]
+    size: Optional[float]
 
 
-class FarmUpdate(BaseModel):
-    name: Optional[str] = None
-    location: Optional[str] = None
-    size: Optional[float] = None
+class FarmUpdateRequest(BaseModel):
+    name: Optional[str]
+    latitude: Optional[float]
+    longitude: Optional[float]
+    size: Optional[float]
 
 
-class FarmInDB(FarmBase):
+class FarmResponse(BaseModel):
     id: int
+    name: str
+    latitude: Optional[float]
+    longitude: Optional[float]
+    size: Optional[float]
     created_at: datetime
     updated_at: datetime
-    users: List[UserFarmInDB] = []
-
-    class Config:
-        from_attributes = True
