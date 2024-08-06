@@ -77,8 +77,7 @@ add_to_database = genai.protos.FunctionDeclaration(
 )
 crop_advise_add_to_database = genai.protos.FunctionDeclaration(
     name="crop_advise",
-    description=textwrap.dedent(" Give advise and tips for crop during this phase of development."
-    ),
+    description=textwrap.dedent(" Give advise and tips for crop during this phase of development."),
     parameters=genai.protos.Schema(
         type=genai.protos.Type.OBJECT,
         properties={"crop_advise": crop_advise},
