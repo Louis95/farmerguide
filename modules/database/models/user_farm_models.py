@@ -44,7 +44,5 @@ class Farm(Base, TimeStampMixin):
     longitude = Column(Float)
     size = Column(Float)  # in hectares
     users = relationship("User", secondary=user_farm, back_populates="farms")
-    crop_diseases = relationship("CropDisease", back_populates="farm")
     soil_health_records = relationship("SoilHealth", back_populates="farm")
-    crop_diagnosis = relationship("CropDiagnosis", back_populates="farm")
     crop = relationship("Crop", back_populates="farm")
