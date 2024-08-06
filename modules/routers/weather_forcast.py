@@ -41,7 +41,8 @@ def get_weather_forcast(
 
     forecast_response = FarmWeatherForecastResponse(
         farm_name=farm.name,
-        location=f"{farm.latitude}, {farm.longitude}",
+        latitude=farm.latitude,
+        longitude=farm.longitude,
         forecast=[DailyWeatherForecast(**forecast) for forecast in weather_forecast],
     )
 
