@@ -45,6 +45,7 @@ def get_farming_advices_for_crop(crop_id: int, db: Session = Depends(get_db_sess
         .filter(WeatherForecast.date > datetime.now())
         .all()
     )
-    crop_advise = get_advice_for_crop(crop, weather)
+    # return crop
+    crop_advise =  get_advice_for_crop(crop, weather)
     ## store the advise on the database
     return crop_advise

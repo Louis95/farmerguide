@@ -115,7 +115,7 @@ def get_advice_for_crop(crop: Crop, weather_forecast: list[WeatherForecast]):
     result = model.generate_content(
         """
             You are an expert in agriculture and you have been asked to provide advise for a crop.
-            The crop  {crop.type} was planted on {crop.planted_on}. with the following weather forecast for a number of days ahead:
+            The crop  {crop.crop_type} was planted on {crop.planted_on}. with the following weather forecast for a number of days ahead:
             {weather_forecast}
             As an expert what tip and or advise would you give to the farmer to ensure a good yield on the above crop during this phase of development.
             """,
