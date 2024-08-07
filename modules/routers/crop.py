@@ -7,6 +7,7 @@ from modules.utilities.auth import get_db_session
 
 router = APIRouter(tags=["crop"])
 
+
 @router.post("/crop/", response_model=CropCreate)
 def create_crop(crop: CropCreate, db: Session = Depends(get_db_session)):  # noqa: B008
     db_crop = Crop(crop_type=crop.crop_type, notes=crop.notes, planted_on=crop.planted_on, farm_id=crop.farm_id)

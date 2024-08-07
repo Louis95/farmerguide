@@ -9,6 +9,7 @@ class CropBase(BaseModel):
     notes: str
     planted_on: datetime
 
+
 class CropUpdate(CropBase):
     harvested_on: Optional[datetime] = None
     is_infected: Optional[bool] = None

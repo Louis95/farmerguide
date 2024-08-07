@@ -74,7 +74,7 @@ class FarmBase(BaseModel):
     name: str
     size: float
     latitude: float
-    longitude:float
+    longitude: float
 
 
 class FarmCreate(FarmBase):

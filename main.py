@@ -7,12 +7,12 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 
 from modules.routers import (
+    crop,
     crop_disease,
     farming_advice,
     soil_health,
     users,
     weather_forcast,
-    crop,
 )
 from modules.utilities.responses import base_responses
 
