@@ -12,6 +12,7 @@ from modules.routers import (
     soil_health,
     users,
     weather_forcast,
+    crop,
 )
 from modules.utilities.responses import base_responses
 
@@ -38,6 +39,7 @@ app.include_router(crop_disease.router)
 app.include_router(farming_advice.router)
 app.include_router(soil_health.router)
 app.include_router(weather_forcast.router)
+app.include_router(crop.router)
 
 if __name__ == "__main__":
     load_dotenv()

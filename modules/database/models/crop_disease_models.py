@@ -9,7 +9,7 @@ from modules.utilities import Base
 class CropDisease(Base, TimeStampMixin):
     __tablename__ = "crop_diseases"
     id = Column(Integer, primary_key=True, index=True)
-    crop_id = Column(Integer, ForeignKey("crops.id", ondelete="CASCADE"))
+    crop_id = Column(Integer, ForeignKey("crop.id", ondelete="CASCADE"))
     crop_type = Column(String)
     disease_name = Column(String)
     confidence = Column(Float)

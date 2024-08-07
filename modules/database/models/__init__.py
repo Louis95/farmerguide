@@ -7,3 +7,4 @@ from .soil_health_models import *
 from .user_farm_models import *
 from .utility_models import *
 from .weather_forecast_models import *
+from .crop_models import *

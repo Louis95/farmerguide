@@ -67,7 +67,7 @@ async def logout(current_user: user_farm_models.User = Depends(auth.get_current_
 
 @router.post("/farms/", response_model=FarmCreate)
 def create_farm(farm: FarmCreate, db: Session = Depends(get_db_session)):  # noqa: B008
-    db_farm = Farm(name=farm.name, location=farm.location, size=farm.size)
+    db_farm = Farm(name=farm.name, longitude=farm.longitude, latitude=farm.latitude, size=farm.size)
     db.add(db_farm)
     db.commit()
     db.refresh(db_farm)
