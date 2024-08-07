@@ -12,6 +12,11 @@ router = APIRouter(tags=["crop"])
 
 @router.post("/crop/", status_code=status.HTTP_201_CREATED, response_model=CropInDB)
 def create_crop(crop: CropCreate, db: Session = Depends(get_db_session)):  # noqa: B008
+    db_farm = db.query(Crop).filter_by(id=crop.farm_id).first()
+
+    if not db_farm:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="No farm with that id")
+
     db_crop = Crop(
         crop_type=crop.crop_type,
         notes=crop.notes,
