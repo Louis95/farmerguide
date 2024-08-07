@@ -12,12 +12,12 @@ class FarmingAdviceBase(BaseModel):
 
 
 class FarmingAdviceCreate(FarmingAdviceBase):
-    farm_id: int
+    crop_id: int
 
 
 class FarmingAdviceInDB(FarmingAdviceBase):
     id: int
-    farm_id: int
+    crop_id: int
     created_at: datetime
 
     class Config:

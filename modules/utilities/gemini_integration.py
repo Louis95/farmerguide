@@ -15,16 +15,16 @@ crop_advise = genai.protos.Schema(
     type=genai.protos.Type.OBJECT,
     properties={
         "advice_type": genai.protos.Schema(type=genai.protos.Type.STRING),
-        "advise": genai.protos.Schema(type=genai.protos.Type.STRING),
-        "crop_name": genai.protos.Schema(type=genai.protos.Type.STRING),
+        "advice": genai.protos.Schema(type=genai.protos.Type.STRING),
+        "crop_type": genai.protos.Schema(type=genai.protos.Type.STRING),
         "duration": genai.protos.Schema(type=genai.protos.Type.STRING),
         "other_things_to_note": genai.protos.Schema(type=genai.protos.Type.STRING),
         "confidence_level": genai.protos.Schema(type=genai.protos.Type.NUMBER),
     },
     required=[
-        "advise",
+        "advice",
         "advice_type",
-        "crop_name",
+        "crop_type",
     ],
 )
 

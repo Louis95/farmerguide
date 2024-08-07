@@ -3,8 +3,8 @@ from datetime import datetime
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from modules.database.models import Crop, FarmingAdvice, WeatherForecast
-from modules.database.schemas.farming_advice_schemas import FarmingAdviceCreate
+from modules.database.models import Crop, WeatherForecast
+from modules.database.schemas.farming_advice_schemas import FarmingAdviceBase
 from modules.utilities.auth import get_db_session
 from modules.utilities.gemini_integration import get_advice_for_crop
 
@@ -34,7 +34,7 @@ router = APIRouter(tags=["FarmingAdvice"])
 
 
 # get farming advise for a crop
-@router.get("/farming_advice/crop/{crop_id}", response_model=FarmingAdviceCreate)
+@router.get("/farming_advice/crop/{crop_id}", response_model=FarmingAdviceBase)
 def get_farming_advices_for_crop(crop_id: int, db: Session = Depends(get_db_session)):  # noqa: B008
     crop = db.query(Crop).filter(Crop.id == crop_id).first()
     if not crop:
