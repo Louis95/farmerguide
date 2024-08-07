@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 
 from modules.routers import (
+    crop,
     crop_disease,
     farming_advice,
     soil_health,
@@ -38,6 +39,7 @@ app.include_router(crop_disease.router)
 app.include_router(farming_advice.router)
 app.include_router(soil_health.router)
 app.include_router(weather_forcast.router)
+app.include_router(crop.router)
 
 if __name__ == "__main__":
     load_dotenv()

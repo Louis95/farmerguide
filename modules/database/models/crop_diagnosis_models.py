@@ -19,7 +19,7 @@ from modules.utilities import Base
 class CropDiagnosis(Base, TimeStampMixin):
     __tablename__ = "crop_diagnosis"
     id = Column(Integer, primary_key=True, index=True)
-    crop_id = Column(Integer, ForeignKey("crops.id", ondelete="CASCADE"))
+    crop_id = Column(Integer, ForeignKey("crop.id", ondelete="CASCADE"))
     is_infected = Column(BOOLEAN)
     crop_name = Column(String)
     crop_type = Column(String)

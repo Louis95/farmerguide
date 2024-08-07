@@ -9,8 +9,10 @@ from modules.utilities.database import Base
 class FarmingAdvice(Base, TimeStampMixin):
     __tablename__ = "farming_advice"
     id = Column(Integer, primary_key=True, index=True)
-    farm_id = Column(Integer, ForeignKey("farms.id"))
+    crop_id = Column(Integer, ForeignKey("crop.id"))
     advice_type = Column(String)  # e.g., "crop selection", "pest management"
-    content = Column(Text)
+    advice = Column(Text)
+    other_things_to_note = Column(Text)
+    duration = Column(String)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    farm = relationship("Farm")
+    crop = relationship("Crop")

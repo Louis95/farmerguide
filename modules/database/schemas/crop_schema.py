@@ -1,14 +1,18 @@
 from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel
 
 
 class CropBase(BaseModel):
-    is_infected: bool
-    crop_name: str
+    crop_type: str
     notes: str
     planted_on: datetime
-    harvested_on: datetime
+
+
+class CropUpdate(CropBase):
+    harvested_on: Optional[datetime] = None
+    is_infected: Optional[bool] = None
 
 
 class CropCreate(CropBase):

@@ -72,8 +72,9 @@ class UserInDB(UserBase):
 
 class FarmBase(BaseModel):
     name: str
-    location: str
     size: float
+    latitude: float
+    longitude: float
 
 
 class FarmCreate(FarmBase):
@@ -82,7 +83,8 @@ class FarmCreate(FarmBase):
 
 class FarmUpdate(BaseModel):
     name: Optional[str] = None
-    location: Optional[str] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
     size: Optional[float] = None
 
 
