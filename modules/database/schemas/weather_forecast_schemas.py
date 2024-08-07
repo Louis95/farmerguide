@@ -1,22 +1,27 @@
 from datetime import datetime
+from typing import List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
-class WeatherForecastBase(BaseModel):
-    date: datetime
-    temperature: float
-    humidity: float
+class DailyWeatherForecast(BaseModel):
+    date: datetime = Field(None, description="")
+    temperature_high: float = Field(None, description="The high temperature")
+    temperature_low: float = Field(None, description="The low temperature")
     precipitation: float
+    humidity: float
     wind_speed: float
-    forecast_type: str
+    description: str = Field(None, description="The description")
 
 
-class WeatherForecastCreate(WeatherForecastBase):
-    farm_id: int
+class FarmWeatherForecastResponse(BaseModel):
+    farm_name: str
+    latitude: str
+    longitude: str
+    forecast: List[DailyWeatherForecast]
 
 
-class WeatherForecastInDB(WeatherForecastBase):
+class WeatherForecastInDB(DailyWeatherForecast):
     id: int
     farm_id: int
     created_at: datetime

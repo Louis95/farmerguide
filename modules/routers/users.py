@@ -4,9 +4,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
-from modules.database.models import Farm, user_farm_models
+from modules.database.models import user_farm_models
 from modules.database.schemas import user_farm_schemas
-from modules.database.schemas.user_farm_schemas import FarmCreate
 from modules.utilities import auth
 from modules.utilities.auth import get_db_session
 
@@ -63,12 +62,3 @@ async def logout(current_user: user_farm_models.User = Depends(auth.get_current_
 # @router.get("/protected-route")
 # async def protected_route(current_user: user_farm_models.User = Depends(auth.get_current_user)):  # noqa: B008
 #     return {"message": f"Hello, {current_user.username}! This is a protected route."}
-
-
-@router.post("/farms/", response_model=FarmCreate)
-def create_farm(farm: FarmCreate, db: Session = Depends(get_db_session)):  # noqa: B008
-    db_farm = Farm(name=farm.name, longitude=farm.longitude, latitude=farm.latitude, size=farm.size)
-    db.add(db_farm)
-    db.commit()
-    db.refresh(db_farm)
-    return db_farm

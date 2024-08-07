@@ -9,6 +9,7 @@ from fastapi import FastAPI
 from modules.routers import (
     crop,
     crop_disease,
+    farm,
     farming_advice,
     soil_health,
     users,
@@ -40,6 +41,7 @@ app.include_router(farming_advice.router)
 app.include_router(soil_health.router)
 app.include_router(weather_forcast.router)
 app.include_router(crop.router)
+app.include_router(farm.router)
 
 if __name__ == "__main__":
     load_dotenv()

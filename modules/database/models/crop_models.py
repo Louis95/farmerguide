@@ -7,7 +7,7 @@ from modules.utilities.database import Base
 
 
 class Crop(Base, TimeStampMixin):
-    __tablename__ = "crop"
+    __tablename__ = "crops"
     id = Column(Integer, primary_key=True, index=True)
     farm_id = Column(Integer, ForeignKey("farms.id", ondelete="CASCADE"))
     crop_type = Column(String)  # e.g., "banana", "maize"
