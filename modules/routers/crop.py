@@ -3,16 +3,20 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from modules.database.models import Crop
-from modules.database.schemas.crop_schema import CropCreate, CropInDB, CropUpdate
-from modules.utilities.auth import get_db_session
+from modules.database.models import Crop, Farm, User
+from modules.database.schemas.crop_schema import CropCreate, CropResponse, CropUpdate
+from modules.utilities.auth import get_current_user, get_db_session
 
 router = APIRouter(tags=["crop"])
 
 
-@router.post("/crop/", status_code=status.HTTP_201_CREATED, response_model=CropInDB)
-def create_crop(crop: CropCreate, db: Session = Depends(get_db_session)):  # noqa: B008
-    db_farm = db.query(Crop).filter_by(id=crop.farm_id).first()
+@router.post("/crops", status_code=status.HTTP_201_CREATED, response_model=CropResponse)
+def create_crop(
+    crop: CropCreate,
+    db: Session = Depends(get_db_session),
+    current_user: User = Depends(get_current_user),
+):  # noqa: B008
+    db_farm = db.query(Farm).filter_by(id=crop.farm_id).first()
 
     if not db_farm:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="No farm with that id")
@@ -29,13 +33,15 @@ def create_crop(crop: CropCreate, db: Session = Depends(get_db_session)):  # noq
     return db_crop
 
 
-@router.get("/crops/", response_model=List[CropInDB])
-def get_crops(db: Session = Depends(get_db_session)):
+@router.get("/crops", response_model=List[CropResponse])
+def get_crops(db: Session = Depends(get_db_session), current_user: User = Depends(get_current_user)):
     return db.query(Crop).all()
 
 
-@router.get("/crops/{crop_id}", response_model=CropInDB)
-def get_crop(crop_id: int, db: Session = Depends(get_db_session)):
+@router.get("/crops/{crop_id}", response_model=CropResponse)
+def get_crop(crop_id: int,
+             db: Session = Depends(get_db_session),
+             current_user: User = Depends(get_current_user)):
     db_crop = db.query(Crop).filter_by(id=crop_id).first()
     if not db_crop:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Crop not found")
@@ -43,8 +49,13 @@ def get_crop(crop_id: int, db: Session = Depends(get_db_session)):
     return db_crop
 
 
-@router.put("/crops/{crop_id}", response_model=CropInDB)
-def update_crop(crop_id: int, crop: CropUpdate, db: Session = Depends(get_db_session)):
+@router.put("/crops/{crop_id}", response_model=CropResponse)
+def update_crop(
+    crop_id: int,
+    crop: CropUpdate,
+    db: Session = Depends(get_db_session),
+    current_user: User = Depends(get_current_user),
+):
     db_crop = db.query(Crop).filter(Crop.id == crop_id).first()
 
     if not db_crop:
@@ -61,7 +72,9 @@ def update_crop(crop_id: int, crop: CropUpdate, db: Session = Depends(get_db_ses
 
 
 @router.delete("/crops/{crop_id}")
-def delete_crop(crop_id: int, db: Session = Depends(get_db_session)):
+def delete_crop(crop_id: int,
+                db: Session = Depends(get_db_session),
+                current_user: User = Depends(get_current_user)):
     crop = db.query(Crop).filter(Crop.id == crop_id).first()
 
     if not crop:
