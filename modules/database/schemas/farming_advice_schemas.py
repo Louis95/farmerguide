@@ -10,6 +10,7 @@ class FarmingAdviceBase(BaseModel):
     other_things_to_note: Optional[str] = None
     duration: Optional[str] = None
 
+
 class FarmingAdviceCreate(FarmingAdviceBase):
     farm_id: int
 

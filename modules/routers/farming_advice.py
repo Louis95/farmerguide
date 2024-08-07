@@ -39,17 +39,17 @@ def get_farming_advices_for_crop(crop_id: int, db: Session = Depends(get_db_sess
     crop = db.query(Crop).filter(Crop.id == crop_id).first()
     if not crop:
         return None
-    #@todo Check if there exist an advise for this crop for today and if there is one already generated return it
+    # @todo Check if there exist an advise for this crop for today and if there is one already generated return it
     # otherwise query the gemini api.
     #  This will help to avoid generating the same advise multiple times for the same on the same day
-    
-    #@todo get the weather forecast for the farm where the crop is planted use the whether api provided by Pila
+
+    # @todo get the weather forecast for the farm where the crop is planted use the whether api provided by Pila
     weather = (
         db.query(WeatherForecast)
         .filter(WeatherForecast.farm_id == crop.farm_id)
         .filter(WeatherForecast.date > datetime.now())
         .all()
     )
-    crop_advise =  get_advice_for_crop(crop, weather)
-    #@todo store the advise on the database
+    crop_advise = get_advice_for_crop(crop, weather)
+    # @todo store the advise on the database
     return crop_advise
