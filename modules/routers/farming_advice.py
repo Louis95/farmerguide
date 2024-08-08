@@ -17,6 +17,7 @@ router = APIRouter(tags=["FarmingAdvice"])
 def get_farming_advice(advice_id: int, db: Session = Depends(get_db_session)):  # noqa: B008
     return db.query(FarmingAdvice).filter(FarmingAdvice.id == advice_id).first()
 
+
 # get farming advise for a crop
 @router.get("/farming_advice/crop/{crop_id}", response_model=FarmingAdviceResponse)
 def get_farming_advices_for_crop(crop_id: int, db: Session = Depends(get_db_session)):  # noqa: B008
@@ -29,17 +30,25 @@ def get_farming_advices_for_crop(crop_id: int, db: Session = Depends(get_db_sess
     #  and also reduce the number of requests to the gemini api
 
     today = datetime.now().date()
-    advice = db.query(FarmingAdvice).filter(FarmingAdvice.crop_id == crop_id, FarmingAdvice.created_at >= today).first()
+    advice = (
+        db.query(FarmingAdvice).filter(FarmingAdvice.crop_id == crop_id, FarmingAdvice.created_at >= today).first()
+    )
     if advice:
         return advice
-    
+
     weather_forecast = weather_service.get_weather_forecast(
         latitude=crop.farm.latitude, longitude=crop.farm.longitude, days=1
     )
     crop_advise = get_advice_for_crop(crop, weather_forecast)
 
     # Store the advise on the database
-    db_advice = FarmingAdvice(crop_id=crop.id, advice_type=crop_advise["advice_type"], advice=crop_advise["advice"],other_things_to_note=crop_advise["other_things_to_note"],duration=crop_advise["duration"])
+    db_advice = FarmingAdvice(
+        crop_id=crop.id,
+        advice_type=crop_advise["advice_type"],
+        advice=crop_advise["advice"],
+        other_things_to_note=crop_advise["other_things_to_note"],
+        duration=crop_advise["duration"],
+    )
     db.add(db_advice)
     db.commit()
     db.refresh(db_advice)

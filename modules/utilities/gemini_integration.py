@@ -21,14 +21,7 @@ crop_advise = genai.protos.Schema(
         "other_things_to_note": genai.protos.Schema(type=genai.protos.Type.STRING),
         "confidence_level": genai.protos.Schema(type=genai.protos.Type.NUMBER),
     },
-    required=[
-        "advice",
-        "advice_type",
-        "crop_type",
-        "duration",
-        "other_things_to_note",
-        "confidence_level"
-    ],
+    required=["advice", "advice_type", "crop_type", "duration", "other_things_to_note", "confidence_level"],
 )
 
 

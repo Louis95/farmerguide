@@ -23,5 +23,6 @@ class FarmingAdviceInDB(FarmingAdviceBase):
     class Config:
         from_attributes = True
 
+
 class FarmingAdviceResponse(FarmingAdviceBase):
     confidence_level: Optional[float] = None
