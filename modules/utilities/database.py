@@ -43,7 +43,7 @@ def db_connection_string(environment=None) -> str:
     # If the environment is local, and DATABASE_URL is present, use that.
     if environment == "local":
         if "DATABASE_URL" in os.environ:
-            return os.environ["DATABASE_URL"]
+            return os.environ.get("DATABASE_URL").replace("://", "ql://", 1)
         raise Exception("Local environment is specified but DATABASE_URL cannot be found.")
 
     # postgresql
