@@ -14,7 +14,6 @@ class Crop(Base, TimeStampMixin):
     notes = Column(Text)
     planted_on = Column(DateTime(timezone=True), server_default=func.now())
     harvested_on = Column(DateTime(timezone=True), server_default=func.now())
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
     diagnoses = relationship("CropDiagnosis", back_populates="crop", cascade="all, delete-orphan")
     diseases = relationship("CropDisease", back_populates="crop", cascade="all, delete-orphan")
     farm = relationship("Farm")

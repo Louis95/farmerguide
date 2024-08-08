@@ -12,17 +12,18 @@ class CropBase(BaseModel):
 
 class CropUpdate(CropBase):
     harvested_on: Optional[datetime] = None
-    is_infected: Optional[bool] = None
 
 
 class CropCreate(CropBase):
     farm_id: int
 
 
-class CropInDB(CropBase):
+class CropResponse(CropBase):
     id: int
     farm_id: int
     created_at: datetime
+    updated_at: datetime
+    harvested_on: datetime
 
     class Config:
         from_attributes = True
