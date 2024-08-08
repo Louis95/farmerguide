@@ -4,7 +4,7 @@ from datetime import datetime
 from enum import Enum
 from typing import List, Optional
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 
 class UserRole(str, Enum):
@@ -47,7 +47,7 @@ class UserFarmInDB(UserFarmBase):
 
 class UserBase(BaseModel):
     username: str
-    email: EmailStr
+    email: str
 
 
 class UserCreate(UserBase):
@@ -56,7 +56,7 @@ class UserCreate(UserBase):
 
 class UserUpdate(BaseModel):
     username: Optional[str] = None
-    email: Optional[EmailStr] = None
+    email: Optional[str] = None
     password: Optional[str] = None
 
 
