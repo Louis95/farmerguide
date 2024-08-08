@@ -30,22 +30,11 @@ async def create_farm(
         users=[current_user],
     )
 
-    # Add and commit the new farm to the database
     db.add(new_farm)
     db.commit()
     db.refresh(new_farm)
 
     # Create the association in the user_farm table
-    db.execute(
-        user_farm.insert().values(
-            user_id=current_user.id,
-            farm_id=new_farm.id,
-            role="owner",  # Assuming the current user is the owner
-            created_at=datetime.utcnow(),
-            updated_at=datetime.utcnow(),
-        )
-    )
-    db.commit()
 
     # Return the created farm details
     return FarmResponse(

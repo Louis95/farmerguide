@@ -16,8 +16,8 @@ class DailyWeatherForecast(BaseModel):
 
 class FarmWeatherForecastResponse(BaseModel):
     farm_name: str
-    latitude: str
-    longitude: str
+    latitude: float
+    longitude: float
     forecast: List[DailyWeatherForecast]
 
 

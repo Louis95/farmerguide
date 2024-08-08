@@ -21,7 +21,7 @@ user_farm = Table(
     Base.metadata,
     Column("user_id", Integer, ForeignKey("users.id"), primary_key=True),
     Column("farm_id", Integer, ForeignKey("farms.id"), primary_key=True),
-    Column("role", Enum(UserRole), nullable=False),
+    Column("role", Enum(UserRole), nullable=True),
     Column("created_at", DateTime(timezone=True), server_default=func.now()),
     Column("updated_at", DateTime(timezone=True), onupdate=func.now()),
 )

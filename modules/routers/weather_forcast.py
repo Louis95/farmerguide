@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from modules.database.models import Farm, User, user_farm_models
+from modules.database.models import Farm, User
 from modules.database.schemas.weather_forecast_schemas import (
     DailyWeatherForecast,
     FarmWeatherForecastResponse,
@@ -19,17 +19,17 @@ def get_weather_forcast(
     days: int = Query(..., description="The number of days return weather forecast"),
     current_user: User = Depends(auth.get_current_user),
 ):
-    user_farm = (
-        db.query(user_farm_models.user_farm)
-        .filter(
-            user_farm_models.user_farm.c.user_id == current_user.id,
-            user_farm_models.user_farm.c.farm_id == farm_id,
-        )
-        .first()
-    )
+    # user_farm = (
+    #     db.query(user_farm_models.user_farm)
+    #     .filter(
+    #         user_farm_models.user_farm.c.user_id == current_user.id,
+    #         user_farm_models.user_farm.c.farm_id == farm_id,
+    #     )
+    #     .first()
+    # )
 
-    if not user_farm:
-        raise HTTPException(status_code=403, detail="You don't have access to this farm")
+    # if not user_farm:
+    #     raise HTTPException(status_code=403, detail="You don't have access to this farm")
 
     farm = db.query(Farm).filter(Farm.id == farm_id).first()
     if not farm:
