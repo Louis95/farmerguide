@@ -25,6 +25,9 @@ crop_advise = genai.protos.Schema(
         "advice",
         "advice_type",
         "crop_type",
+        "duration",
+        "other_things_to_note",
+        "confidence_level"
     ],
 )
 
