@@ -1,8 +1,9 @@
 import logging
 import os
-import sys
 
-import uvicorn
+# import sys
+#
+# import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI
 
@@ -43,23 +44,23 @@ app.include_router(weather_forcast.router)
 app.include_router(crop.router)
 app.include_router(farm.router)
 
-if __name__ == "__main__":
-    load_dotenv()
-    if "DATABASE_URL" in os.environ:
-        # noinspection PyTypeChecker
-        api_host = os.getenv("API_HOST", "0.0.0.0")  # noqa: S104 - binding to all interfaces on purpose
-        api_port = int(os.getenv("API_PORT", "8000"))
-        if ENVIRONMENT == "local":
-            uvicorn.run(
-                "main:app",
-                host=api_host,
-                port=api_port,
-                reload=True,
-            )
-        else:
-            uvicorn.run(app, host=api_host, port=api_port)
-    else:
-        sys.stderr.write(
-            "Variable DATABASE_URL cannot be found in environment. Put it in .env or in "
-            "the DATABASE_URL environment variable\n"
-        )
+# if __name__ == "__main__":
+#     load_dotenv()
+#     if "DATABASE_URL" in os.environ:
+#         # noinspection PyTypeChecker
+#         api_host = os.getenv("API_HOST", "0.0.0.0")  # noqa: S104 - binding to all interfaces on purpose
+#         api_port = int(os.getenv("PORT", "8000"))
+#         if ENVIRONMENT == "local":
+#             uvicorn.run(
+#                 "main:app",
+#                 host=api_host,
+#                 port=api_port,
+#                 reload=True,
+#             )
+#         else:
+#             uvicorn.run(app, host=api_host, port=api_port)
+#     else:
+#         sys.stderr.write(
+#             "Variable DATABASE_URL cannot be found in environment. Put it in .env or in "
+#             "the DATABASE_URL environment variable\n"
+#         )
