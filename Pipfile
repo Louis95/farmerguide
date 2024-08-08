@@ -51,6 +51,7 @@ pyyaml = "==6.0"
 virtualenv = "==20.23.0"
 python-jose = {version = "==3.3.0", extras = ["cryptography"]}
 passlib = "~=1.7.4"
+google = "==3.0.0"
 
 [dev-packages]
 
