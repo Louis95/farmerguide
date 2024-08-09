@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from enum import Enum
-from typing import List, Optional
+from typing import Optional
 
 from pydantic import BaseModel
 
@@ -24,7 +24,7 @@ class Token(BaseModel):
 
 
 class UserFarmBase(BaseModel):
-    role: UserRole
+    role: Optional[UserRole]
 
 
 class UserFarmCreate(UserFarmBase):
@@ -36,10 +36,10 @@ class UserFarmUpdate(BaseModel):
 
 
 class UserFarmInDB(UserFarmBase):
-    user_id: int
-    farm_id: int
-    created_at: datetime
-    updated_at: datetime
+    user_id: Optional[int]
+    farm_id: Optional[int]
+    created_at: Optional[datetime]
+    updated_at: Optional[datetime]
 
     class Config:
         from_attributes = True
@@ -60,21 +60,19 @@ class UserUpdate(BaseModel):
     password: Optional[str] = None
 
 
+class FarmBase(BaseModel):
+    id: Optional[int]
+    name: str
+    size: Optional[float]
+    latitude: Optional[float]
+    longitude: Optional[float]
+
+
 class UserInDB(UserBase):
     id: int
     created_at: datetime
     updated_at: datetime
-    farms: List[UserFarmInDB] = []
-
-    class Config:
-        from_attributes = True
-
-
-class FarmBase(BaseModel):
-    name: str
-    size: float
-    latitude: float
-    longitude: float
+    farms: Optional[list]
 
 
 class FarmCreateRequest(BaseModel):

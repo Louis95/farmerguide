@@ -2,9 +2,9 @@ from datetime import timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
-from modules.database.models import user_farm_models
+from modules.database.models import User, user_farm_models
 from modules.database.schemas import user_farm_schemas
 from modules.utilities import auth
 from modules.utilities.auth import get_db_session
@@ -46,8 +46,31 @@ async def login_for_access_token(
 
 
 @router.get("/users/me", response_model=user_farm_schemas.UserInDB)
-async def read_users_me(current_user: user_farm_models.User = Depends(auth.get_current_user)):  # noqa: B008
-    return current_user
+async def read_users_me(
+    current_user: user_farm_models.User = Depends(auth.get_current_user),
+    db: Session = Depends(get_db_session),  # noqa: 950
+):  # noqa: B008
+    user = db.query(User).options(joinedload(User.farms)).filter(User.id == current_user.id).first()
+    user_farms = []
+    for farm in user.farms:
+        user_farms.append(
+            {
+                "id": farm.id,
+                "name": farm.name,
+                "size": farm.id,
+                "latitude": farm.latitude,
+                "longitude": farm.longitude,
+            }  # noqa: 950
+        )
+
+    return user_farm_schemas.UserInDB(
+        id=user.id,
+        username=user.username,
+        email=user.email,
+        created_at=user.created_at,
+        updated_at=user.updated_at,
+        farms=user_farms,
+    )
 
 
 @router.post("/logout")
