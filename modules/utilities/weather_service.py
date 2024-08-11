@@ -32,3 +32,29 @@ def get_weather_forecast(latitude, longitude, days):
         forecasts.append(forecast)
 
     return forecasts
+def get_weather_forecast_by_timestamp(latitude, longitude, timestamp):
+    url = "https://api.openweathermap.org/data/3.0/onecall/timemachine"
+
+    params = {"lat": latitude, "lon": longitude, "units": "metric", "dt": timestamp, "appid": api_key}
+    response = requests.get(url, params=params)
+    response.raise_for_status()
+    weather_data = response.json()
+
+    forecasts = []
+
+    for day in weather_data["data"]:
+        forecast = {
+            "date": datetime.fromtimestamp(day["dt"]),
+            "temperature": day["temp"],
+            "pressure": day["pressure"],
+            "humidity": day["humidity"],
+            "wind_deg": day["wind_deg"],
+            "dew_point": day["dew_point"],
+            "wind_speed": day["speed"],
+            "visibility": day["visibility"],
+            "feels_like": day["feels_like"],
+            "forecast_type": day["weather"],
+        }
+        forecasts.append(forecast)
+
+    return forecasts
