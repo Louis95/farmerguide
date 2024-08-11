@@ -5,7 +5,10 @@ from sqlalchemy.orm import Session
 
 from modules.database.models import CropDisease
 from modules.database.models.crop_diagnosis_models import CropDiagnosis
-from modules.database.schemas.crop_diagnosis_schemas import CropDiagnosisCreate
+from modules.database.schemas.crop_diagnosis_schemas import (
+    CropDiagnosisBase,
+    CropDiagnosisCreate,
+)
 from modules.database.schemas.crop_disease_schemas import CropDiseaseCreate
 from modules.utilities.auth import get_db_session
 from modules.utilities.gemini_integration import get_disease_data
@@ -43,6 +46,21 @@ async def detect_crop_disease(
     db.commit()
     db.refresh(db_crop_diagnosis)
     return db_crop_diagnosis
+
+
+@router.post("/crop-diseases/generic", response_model=CropDiagnosisBase)
+async def generic_detect_crop_disease(
+    user_prompt: str, files: List[UploadFile], db: Session = Depends(get_db_session)  # noqa: B008
+):
+    filePaths = []
+    for file in files:
+        file_location = f"uploaded_files/{file.filename}"
+        filePaths.append(file_location)
+        with open(file_location, "wb") as file_object:
+            file_object.write(file.file.read())
+    diagnosis, images = get_disease_data(user_prompt, filePaths)
+    payload = {"images": images, **diagnosis}
+    return payload
 
 
 @router.get("/crop-diseases/{crop_diagnosis_id}", response_model=CropDiagnosisCreate)
