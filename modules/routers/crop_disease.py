@@ -27,7 +27,7 @@ def create_crop_disease(crop_disease: CropDiseaseCreate, db: Session = Depends(g
 
 @router.post("/crop-diseases/detect", response_model=CropDiagnosisCreate)
 async def detect_crop_disease(
-    user_prompt: str, farm_id: int, files: List[UploadFile], db: Session = Depends(get_db_session)  # noqa: B008
+    user_prompt: str, crop_id: int, files: List[UploadFile], db: Session = Depends(get_db_session)  # noqa: B008
 ):
     # async def detect_crop_disease(user_prompt: str, files: List[UploadFile] = File(...)):
     filePaths = []
@@ -37,16 +37,19 @@ async def detect_crop_disease(
         with open(file_location, "wb") as file_object:
             file_object.write(file.file.read())
     diagnosis, images = get_disease_data(user_prompt, filePaths)
-    payload = {"farm_id": farm_id, "images": images, **diagnosis}
+    payload = {"crop_id": crop_id, "images": images, **diagnosis}
     db_crop_diagnosis = CropDiagnosis(**payload)
     db.add(db_crop_diagnosis)
     db.commit()
     db.refresh(db_crop_diagnosis)
     return db_crop_diagnosis
+
+
 @router.get("/crop-diseases/{crop_diagnosis_id}", response_model=CropDiagnosisCreate)
 def get_crop_disease(crop_diagnosis_id: int, db: Session = Depends(get_db_session)):
     return db.query(CropDiagnosis).filter(CropDiagnosis.id == crop_diagnosis_id).first()
 
+
 @router.get("/crop-diseases/history", response_model=List[CropDiagnosisCreate])
-def get_crop_disease_history(farm_id: int, db: Session = Depends(get_db_session)):
-    return db.query(CropDiagnosis).filter(CropDiagnosis.farm_id == farm_id).all()
+def get_crop_disease_history(crop_id: int, db: Session = Depends(get_db_session)):
+    return db.query(CropDiagnosis).filter(CropDiagnosis.crop_id == crop_id).all()
