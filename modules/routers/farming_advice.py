@@ -34,17 +34,6 @@ def get_farming_advices_for_crop(
         latitude=crop.farm.latitude, longitude=crop.farm.longitude, days=extract_day(date)
     )
     crop_advise = get_advice_for_crop(crop, weather_forecast)
-
-    # Store the advise on the database
-    db_advice = FarmingAdvice(
-        crop_id=crop.id,
-        advice_type=crop_advise["advice_type"],
-        advice=crop_advise["advice"],
-        other_things_to_note=crop_advise["other_things_to_note"],
-        duration=crop_advise["duration"],
-    )
-    db.refresh(db_advice)
-
     return crop_advise
 # get farming tips for a crop
 @router.get("/farming_advice/crop/{crop_id}/daily-tips", response_model=FarmingAdviceResponse)
