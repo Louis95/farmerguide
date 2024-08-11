@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from modules.database.models import Crop
@@ -20,7 +20,27 @@ def get_farming_advice(advice_id: int, db: Session = Depends(get_db_session)):  
 
 # get farming advise for a crop
 @router.get("/farming_advice/crop/{crop_id}", response_model=FarmingAdviceResponse)
-def get_farming_advices_for_crop(crop_id: int, db: Session = Depends(get_db_session)):  # noqa: B008
+def get_farming_advices_for_crop(
+    crop_id: int,
+    date: str = Query(..., description="The date of the day to return advise for"),
+    db: Session = Depends(get_db_session),
+):  # noqa: B008
+    crop = db.query(Crop).filter(Crop.id == crop_id).first()
+    if not crop:
+        return None
+    #todo upgrade weather forcase to paid plan and use a specific day for forcasting for now just use daily
+    # timestamp=date_to_unix(date)
+    weather_forecast = weather_service.get_weather_forecast(
+        latitude=crop.farm.latitude, longitude=crop.farm.longitude, days=extract_day(date)
+    )
+    crop_advise = get_advice_for_crop(crop, weather_forecast)
+    return crop_advise
+# get farming tips for a crop
+@router.get("/farming_advice/crop/{crop_id}/daily-tips", response_model=FarmingAdviceResponse)
+def get_daily_farming_advices_tips_for_crop(
+    crop_id: int,
+    db: Session = Depends(get_db_session),
+):  # noqa: B008
     crop = db.query(Crop).filter(Crop.id == crop_id).first()
     if not crop:
         return None
@@ -54,3 +74,60 @@ def get_farming_advices_for_crop(crop_id: int, db: Session = Depends(get_db_sess
     db.refresh(db_advice)
 
     return crop_advise
+
+
+def date_to_unix(date_string):
+    # List of possible date formats
+    date_formats = [
+        "%Y-%m-%d",            # 2024-08-09
+        "%d/%m/%Y",            # 09/08/2024
+        "%d-%m-%Y",            # 09-08-2024
+        "%B %d, %Y %I:%M %p",  # August 9, 2024 12:00 PM
+        "%B %d, %Y",           # August 9, 2024
+        "%m/%d/%Y %I:%M %p",   # 08/09/2024 12:00 PM
+        "%Y-%m-%d %H:%M:%S",   # 2024-08-09 14:45:00
+        "%Y-%m-%dT%H:%M:%S.%fZ",  # ISO 8601 format with milliseconds and UTC
+        "%Y-%m-%dT%H:%M:%S.%f",   # ISO 8601 format with milliseconds without UTC
+        "%Y-%m-%dT%H:%M:%S",      # ISO 8601 format without milliseconds
+    ]
+
+    for fmt in date_formats:
+        try:
+            dt = datetime.strptime(date_string, fmt)
+            return int(dt.timestamp())
+        except ValueError:
+            continue
+    
+    raise ValueError("Date format not recognized")
+
+
+from datetime import datetime
+
+def extract_day(date_string):
+    try:
+        # Try to parse the date in various common formats
+        formats  = [
+        "%Y-%m-%d",            # 2024-08-09
+        "%d/%m/%Y",            # 09/08/2024
+        "%d-%m-%Y",            # 09-08-2024
+        "%B %d, %Y %I:%M %p",  # August 9, 2024 12:00 PM
+        "%B %d, %Y",           # August 9, 2024
+        "%m/%d/%Y %I:%M %p",   # 08/09/2024 12:00 PM
+        "%Y-%m-%d %H:%M:%S",   # 2024-08-09 14:45:00
+        "%Y-%m-%dT%H:%M:%S.%fZ",  # ISO 8601 format with milliseconds and UTC
+        "%Y-%m-%dT%H:%M:%S.%f",   # ISO 8601 format with milliseconds without UTC
+        "%Y-%m-%dT%H:%M:%S",      # ISO 8601 format without milliseconds
+    ]
+        
+        for fmt in formats:
+            try:
+                date_obj = datetime.strptime(date_string, fmt)
+                return date_obj.day
+            except ValueError:
+                continue
+        
+        # If none of the formats match, raise an error
+        raise ValueError("Date format not recognized.")
+    
+    except Exception as e:
+        return f"Error: {e}"
