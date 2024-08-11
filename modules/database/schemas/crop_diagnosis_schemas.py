@@ -17,12 +17,12 @@ class CropDiagnosisBase(BaseModel):
 
 
 class CropDiagnosisCreate(CropDiagnosisBase):
-    farm_id: int
+    crop_id: int
 
 
 class CropDiagnosisInDB(CropDiagnosisBase):
     id: int
-    farm_id: int
+    crop_id: int
     created_at: datetime
 
     class Config:
