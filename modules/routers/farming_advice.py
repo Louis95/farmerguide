@@ -28,14 +28,10 @@ def get_farming_advices_for_crop(
     crop = db.query(Crop).filter(Crop.id == crop_id).first()
     if not crop:
         return None
-    # Check if there exist an advise for this crop for today using day from timestamp and if there is one already generated return it
-    # otherwise query the gemini api.
-    #  This will help to avoid generating the same advise multiple times for the same on the same day
-    #  and also reduce the number of requests to the gemini api
-
-
-    weather_forecast = weather_service.get_weather_forecast_by_timestamp(
-        latitude=crop.farm.latitude, longitude=crop.farm.longitude, timestamp=date_to_unix(date)
+    #todo upgrade weather forcase to paid plan and use a specific day for forcasting for now just use daily
+    # timestamp=date_to_unix(date)
+    weather_forecast = weather_service.get_weather_forecast(
+        latitude=crop.farm.latitude, longitude=crop.farm.longitude, days=extract_day(date)
     )
     crop_advise = get_advice_for_crop(crop, weather_forecast)
 
@@ -114,3 +110,35 @@ def date_to_unix(date_string):
             continue
     
     raise ValueError("Date format not recognized")
+
+
+from datetime import datetime
+
+def extract_day(date_string):
+    try:
+        # Try to parse the date in various common formats
+        formats  = [
+        "%Y-%m-%d",            # 2024-08-09
+        "%d/%m/%Y",            # 09/08/2024
+        "%d-%m-%Y",            # 09-08-2024
+        "%B %d, %Y %I:%M %p",  # August 9, 2024 12:00 PM
+        "%B %d, %Y",           # August 9, 2024
+        "%m/%d/%Y %I:%M %p",   # 08/09/2024 12:00 PM
+        "%Y-%m-%d %H:%M:%S",   # 2024-08-09 14:45:00
+        "%Y-%m-%dT%H:%M:%S.%fZ",  # ISO 8601 format with milliseconds and UTC
+        "%Y-%m-%dT%H:%M:%S.%f",   # ISO 8601 format with milliseconds without UTC
+        "%Y-%m-%dT%H:%M:%S",      # ISO 8601 format without milliseconds
+    ]
+        
+        for fmt in formats:
+            try:
+                date_obj = datetime.strptime(date_string, fmt)
+                return date_obj.day
+            except ValueError:
+                continue
+        
+        # If none of the formats match, raise an error
+        raise ValueError("Date format not recognized.")
+    
+    except Exception as e:
+        return f"Error: {e}"
