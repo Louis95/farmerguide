@@ -101,6 +101,9 @@ def date_to_unix(date_string):
         "%B %d, %Y",           # August 9, 2024
         "%m/%d/%Y %I:%M %p",   # 08/09/2024 12:00 PM
         "%Y-%m-%d %H:%M:%S",   # 2024-08-09 14:45:00
+        "%Y-%m-%dT%H:%M:%S.%fZ",  # ISO 8601 format with milliseconds and UTC
+        "%Y-%m-%dT%H:%M:%S.%f",   # ISO 8601 format with milliseconds without UTC
+        "%Y-%m-%dT%H:%M:%S",      # ISO 8601 format without milliseconds
     ]
 
     for fmt in date_formats:
