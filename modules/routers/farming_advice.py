@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from modules.database.models import Crop
@@ -20,7 +20,11 @@ def get_farming_advice(advice_id: int, db: Session = Depends(get_db_session)):  
 
 # get farming advise for a crop
 @router.get("/farming_advice/crop/{crop_id}", response_model=FarmingAdviceResponse)
-def get_farming_advices_for_crop(crop_id: int, db: Session = Depends(get_db_session)):  # noqa: B008
+def get_farming_advices_for_crop(
+    crop_id: int,
+    days: int = Query(..., description="The number of days return weather forecast"),
+    db: Session = Depends(get_db_session),
+):  # noqa: B008
     crop = db.query(Crop).filter(Crop.id == crop_id).first()
     if not crop:
         return None
@@ -37,7 +41,7 @@ def get_farming_advices_for_crop(crop_id: int, db: Session = Depends(get_db_sess
         return advice
 
     weather_forecast = weather_service.get_weather_forecast(
-        latitude=crop.farm.latitude, longitude=crop.farm.longitude, days=1
+        latitude=crop.farm.latitude, longitude=crop.farm.longitude, days=days
     )
     crop_advise = get_advice_for_crop(crop, weather_forecast)
 
