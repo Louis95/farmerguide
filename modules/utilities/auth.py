@@ -17,7 +17,7 @@ from modules.utilities.database import get_db_session
 # openssl rand -hex 32
 SECRET_KEY = "YOUR_SECRET_KEY_HERE"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 1440
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
