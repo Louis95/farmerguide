@@ -1,88 +1,11 @@
 # Farmer's Guide
 
-```mermaid
-erDiagram
-    USER {
-        int id PK
-        string username
-        string email
-        string hashed_password
-        datetime created_at
-        datetime updated_at
-    }
-    FARM {
-        int id PK
-        string name
-        string location
-        float size
-        datetime created_at
-        datetime updated_at
-    }
-    SOIL_HEALTH {
-        int id PK
-        int farm_id
-        float ph_level
-        float nitrogen_level
-        float phosphorus_level
-        float potassium_level
-        float organic_matter
-        datetime analysis_date
-        text recommendations
-    }
-    NOTIFICATION {
-        int id PK
-        int user_id
-        text message
-        string notification_type
-        boolean is_read
-        datetime created_at
-    }
-    FARMING_ADVICE {
-        int id PK
-        int farm_id
-        string advice_type
-        text content
-        datetime created_at
-    }
-    CROP_DISEASE {
-        int id PK
-        int farm_id
-        string crop_type
-        string disease_name
-        float confidence
-        string image_url
-        text treatment_recommendation
-        datetime detected_at
-    }
-    USER_FARM {
-        int user_id PK
-        int farm_id PK
-        string role
-        datetime created_at
-        datetime updated_at
-    }
+Farmer's guide is a cutting-edge platform powered by AI and the Gemini framework, designed to provide farmers with real-time,
+actionable insights. By allowing farmers to upload photos of their crops, the platform can instantly detect diseases,
+offering accurate diagnoses that help prevent devastating yield losses. The platform also delivers localized weather forecasts, 
+enabling farmers to make informed decisions about planting and harvesting times. Additionally, it provides personalized farming tips tailored to each user's specific needs and regional conditions.
 
-    USER ||--o{ USER_FARM : has
-    FARM ||--o{ USER_FARM : has
-    USER ||--o{ NOTIFICATION : receives
-    FARM ||--o{ SOIL_HEALTH : has
-    FARM ||--o{ FARMING_ADVICE : receives
-    FARM ||--o{ CROP_DISEASE : has
-
-```
-
-### Explanation
-- **Entities**:
-  - `USER`, `FARM`, `SOIL_HEALTH`, `NOTIFICATION`, `FARMING_ADVICE`, `CROP_DISEASE`, `USER_FARM`
-  
-- **Relationships**:
-  - Users can have many notifications, and notifications belong to one user.
-  - Farms can have many soil health records, farming advice, crop diseases, and user-farm relationships.
-  - Soil health records, farming advice, and crop diseases belong to one farm.
-  - The `USER_FARM` table creates a many-to-many relationship between users and farms, with additional attributes such as role, created_at, and updated_at.
-
-
-## How to Contribute
+## How to run it
 
 Farmer guide API is a Python application, so you'll need a working Python environment to run it.
 
@@ -175,3 +98,8 @@ To run the application, run the following:
 
 $ python main.py
 ```
+
+6. **Documentation**
+
+You can access the API documentations [here](https://farmerguide-5dc91de39f9d.herokuapp.com/docs#)
+
