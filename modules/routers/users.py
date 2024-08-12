@@ -79,9 +79,3 @@ async def logout(current_user: user_farm_models.User = Depends(auth.get_current_
     # Instead, we rely on the client to remove the token.
     # Here, we'll just return a success message.
     return {"detail": "Successfully logged out"}
-
-
-# # Protected route example
-# @router.get("/protected-route")
-# async def protected_route(current_user: user_farm_models.User = Depends(auth.get_current_user)):  # noqa: B008
-#     return {"message": f"Hello, {current_user.username}! This is a protected route."}

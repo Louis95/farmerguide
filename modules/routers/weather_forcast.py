@@ -19,6 +19,7 @@ def get_weather_forcast(
     days: int = Query(..., description="The number of days return weather forecast"),
     current_user: User = Depends(auth.get_current_user),
 ):
+    """Returns the weather forcast for a particular farm."""
     # user_farm = (
     #     db.query(user_farm_models.user_farm)
     #     .filter(
