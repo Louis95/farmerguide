@@ -21,7 +21,7 @@ async def create_farm(
     db: Session = Depends(get_db_session),
     current_user: User = Depends(get_current_user),  # noqa: B950
 ):
-    # Create a new Farm instance
+    """Create a new Farm instance."""
     new_farm = Farm(
         name=request.name,
         latitude=request.latitude,
@@ -52,6 +52,8 @@ async def create_farm(
 async def delete_farm(
     farm_id: int, db: Session = Depends(get_db_session), current_user: User = Depends(get_current_user)
 ):
+    """Delete a Farm instance."""
+
     farm = db.query(Farm).filter(Farm.id == farm_id).first()
 
     if not farm:
@@ -85,6 +87,7 @@ async def delete_farm(
 async def get_farm_by_id(
     farm_id: int, db: Session = Depends(get_db_session), current_user: User = Depends(get_current_user)
 ):
+    """Delete a Farm instance."""
     farm = db.query(Farm).filter(Farm.id == farm_id).first()
 
     if not farm:
@@ -115,6 +118,7 @@ async def get_farm_by_id(
 async def list_all_farms(
     db: Session = Depends(get_db_session), current_user: User = Depends(get_current_user)
 ):  # noqa: B950
+    """List all Farms."""
     farms = db.query(Farm).join(user_farm).filter(user_farm.c.user_id == current_user.id).all()  # noqa: B950
 
     return [
@@ -138,6 +142,7 @@ async def update_farm(
     db: Session = Depends(get_db_session),
     current_user: User = Depends(get_current_user),
 ):
+    """Update a Farm instance."""
     farm = db.query(Farm).filter(Farm.id == farm_id).first()
 
     if not farm:
