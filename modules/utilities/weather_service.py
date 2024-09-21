@@ -10,7 +10,8 @@ api_key = os.environ["WEATHER_API_KEY"]
 
 
 def get_weather_forecast(latitude, longitude, days):
-    url = "https://api.openweathermap.org/data/2.5/forecast/daily"
+    url = "https://api.openweathermap.org/data/2.5/forecast"
+    # url = "https://api.openweathermap.org/data/2.5/forecast/daily"
 
     params = {"lat": latitude, "lon": longitude, "units": "metric", "cnt": days, "appid": api_key}
     response = requests.get(url, params=params)
@@ -22,11 +23,11 @@ def get_weather_forecast(latitude, longitude, days):
     for day in weather_data["list"]:
         forecast = {
             "date": datetime.fromtimestamp(day["dt"]),
-            "temperature_high": day["temp"]["max"],
-            "temperature_low": day["temp"]["min"],
-            "humidity": day["humidity"],
+            "temperature_high": day["main"]["temp_min"],
+            "temperature_low": day["main"]["temp_max"],
+            "humidity": day["main"]["humidity"],
             "precipitation": day.get("rain", 0),  # Default to 0 if 'rain' key is not present
-            "wind_speed": day["speed"],
+            "wind_speed": day["wind"]["speed"],
             "forecast_type": day["weather"][0]["description"],
         }
         forecasts.append(forecast)
