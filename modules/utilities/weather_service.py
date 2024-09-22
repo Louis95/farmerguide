@@ -26,7 +26,7 @@ def get_weather_forecast(latitude, longitude, days):
             "temperature_high": day["main"]["temp_min"],
             "temperature_low": day["main"]["temp_max"],
             "humidity": day["main"]["humidity"],
-            "precipitation": day["rain"]["3h"],  # Default to 0 if 'rain' key is not present
+            "precipitation": day.get("rain", {}).get("3h", 0),  # Default to 0 if 'rain' key is not present
             "wind_speed": day["wind"]["speed"],
             "forecast_type": day["weather"][0]["description"],
         }
